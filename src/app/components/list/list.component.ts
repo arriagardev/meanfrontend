@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { IssueService } from '../../issue.service';
 import { Router } from '@angular/router';
 import { Issue } from 'src/app/issue';
-import { MatTableDataSource, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
+import { ConfirmEditComponent } from '../dialogs/confirm-edit/confirm-edit.component';
 
 @Component({
   selector: 'app-list',
@@ -14,7 +15,7 @@ export class ListComponent implements OnInit {
   issues: Issue[];
   displayedColumns = ['title', 'responsible', 'severity', 'status', 'actions'];
 
-  constructor(private issueService: IssueService, private router: Router, private dialog: MatDialog) { }
+  constructor(private issueService: IssueService, private router: Router, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.fetchIssues();
@@ -31,8 +32,18 @@ export class ListComponent implements OnInit {
     this.router.navigate([`/edit/${id}`]);
   }
 
+  openDialog(id) {
+    const dialogRef = this.dialog.open(ConfirmEditComponent);
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result) {
+        this.issueService.deleteIssue(id).subscribe(() => {
+          this.fetchIssues();
+        });
+      }
+    })
+  }
+
   deleteIssue(id) {
-    //let dialogRef = this.dialog.open()
     this.issueService.deleteIssue(id).subscribe(() => {
       this.fetchIssues();
     });

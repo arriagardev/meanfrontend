@@ -22,6 +22,7 @@ import { MatToolbarModule,
 import { IssueService } from './issue.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ConfirmEditComponent } from './components/dialogs/confirm-edit/confirm-edit.component';
 
 const routes: Routes = [
   { path: 'create', component: CreateComponent },
@@ -35,7 +36,11 @@ const routes: Routes = [
     AppComponent,
     ListComponent,
     CreateComponent,
-    EditComponent
+    EditComponent,
+    ConfirmEditComponent
+  ],
+  entryComponents: [
+    ConfirmEditComponent
   ],
   imports: [
     BrowserModule,
